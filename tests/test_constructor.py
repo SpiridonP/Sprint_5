@@ -1,46 +1,74 @@
+import config
+from locators import Constructor
 from selenium.webdriver.common.by import By
-from selenium import webdriver
-import time
-driver = webdriver.Chrome()
-import conftest
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-driver.get("https://stellarburgers.nomoreparties.site/")
-def test_check_sauses():
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']").click()
-    driver.find_element(By.NAME, "name").send_keys('somes@ya.ru')
-    driver.find_element(By.NAME, "Пароль").send_keys(conftest.password)
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']").click()
-    time.sleep(3)
-    driver.find_element(By.XPATH,  ".//span[text()='Соусы']").click()
-    time.sleep(3)
 
-    driver.quit()
+class TestConstructor:
+    def test_check_sauses(self, driver):
+        log_in_account = driver.find_element(*Constructor.BUTTON_LOG_IN_ACCOUNT)
+        log_in_account.click()
+        email = driver.find_element(*Constructor.EMAIL_FIELD)
+        email.send_keys('somes@ya.ru')
+        password = driver.find_element(*Constructor.PASSWORD_FIELD)
+        password.send_keys(config.password)
+        log_in_button = driver.find_element(*Constructor.BUTTON_LOG_IN)
+        log_in_button.click()
+        constructor = driver.find_element(*Constructor.BUTTON_CONSTRUCTOR)
+        constructor.click()
+        sauses = driver.find_element(*Constructor.SAUSES)
+        sauses.click()
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.presence_of_element_located(
+            (By.XPATH, ".//h2[text()='Соусы']")))
+        assert driver.find_element(By.XPATH, ".//h2[text()='Соусы']").text == 'Соусы'
 
-def test_check_bulki():
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']").click()
-    driver.find_element(By.NAME, "name").send_keys('somes@ya.ru')
-    driver.find_element(By.NAME, "Пароль").send_keys(conftest.password)
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']").click()
-    time.sleep(3)
-    driver.find_element(By.XPATH,  ".//span[text()='Соусы']").click()
-    time.sleep(3)
-    driver.find_element(By.XPATH, ".//div[@class='tab_tab__1SPyG  pt-4 pr-10 pb-4 pl-10 noselect']/span[text()='Булки']").click()
-    time.sleep(3)
 
-    driver.quit()
 
-def test_check_topping():
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']").click()
-    driver.find_element(By.NAME, "name").send_keys('somes@ya.ru')
-    driver.find_element(By.NAME, "Пароль").send_keys(conftest.password)
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']").click()
-    time.sleep(3)
-    driver.find_element(By.XPATH, ".//span[text()='Начинки']").click()
-    time.sleep(3)
-    driver.quit()
+
+    def test_check_bulki(self, driver):
+        log_in_account = driver.find_element(*Constructor.BUTTON_LOG_IN_ACCOUNT)
+        log_in_account.click()
+        email = driver.find_element(*Constructor.EMAIL_FIELD)
+        email.send_keys('somes@ya.ru')
+        password = driver.find_element(*Constructor.PASSWORD_FIELD)
+        password.send_keys(config.password)
+        log_in_button = driver.find_element(*Constructor.BUTTON_LOG_IN)
+        log_in_button.click()
+        constructor = driver.find_element(*Constructor.BUTTON_CONSTRUCTOR)
+        constructor.click()
+        sauses = driver.find_element(*Constructor.SAUSES)
+        sauses.click()
+        bulki = driver.find_element(*Constructor.BULKI)
+        bulki.click()
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.presence_of_element_located(
+            (By.XPATH, ".//h2[text()='Булки']")))
+        assert driver.find_element(By.XPATH, ".//h2[text()='Булки']").text == 'Булки'
+
+
+    def test_check_topping(self, driver):
+        log_in_account = driver.find_element(*Constructor.BUTTON_LOG_IN_ACCOUNT)
+        log_in_account.click()
+        email = driver.find_element(*Constructor.EMAIL_FIELD)
+        email.send_keys('somes@ya.ru')
+        password = driver.find_element(*Constructor.PASSWORD_FIELD)
+        password.send_keys(config.password)
+        log_in_button = driver.find_element(*Constructor.BUTTON_LOG_IN)
+        log_in_button.click()
+        constructor = driver.find_element(*Constructor.BUTTON_CONSTRUCTOR)
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.element_to_be_clickable(
+            (By.XPATH, ".//h2[text()='Начинки']")))
+        constructor.click()
+
+        topping = driver.find_element(*Constructor.TOPPING)
+        topping.click()
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.presence_of_element_located(
+            (By.XPATH, ".//h2[text()='Начинки']")))
+        assert driver.find_element(By.XPATH, ".//h2[text()='Начинки']").text == 'Начинки'
+
+
+

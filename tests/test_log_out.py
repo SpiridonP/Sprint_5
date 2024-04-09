@@ -1,21 +1,29 @@
+import config
+from locators import LogOutLocators
 from selenium.webdriver.common.by import By
-from selenium import webdriver
-import time
-import conftest
-driver = webdriver.Chrome()
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-driver.get("https://stellarburgers.nomoreparties.site/")
-def test_log_out():
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']").click()
-    driver.find_element(By.NAME, "name").send_keys('somes@ya.ru')
-    driver.find_element(By.NAME, "Пароль").send_keys(conftest.password)
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']").click()
-    driver.find_element(By.LINK_TEXT, "Личный Кабинет").click()
-    time.sleep(3)
-    driver.find_element(By.XPATH, ".//button[text()='Выход']").click()
 
-    time.sleep(3)
 
-    driver.quit()
+
+class TestLogOut:
+    def test_log_out(self, driver):
+        log_in_in_account_button = driver.find_element(*LogOutLocators.BUTTON_LOG_IN_ACCOUNT)
+        log_in_in_account_button.click()
+        email = driver.find_element(*LogOutLocators.EMAIL_FIELD)
+        email.send_keys('somes@ya.ru')
+        password = driver.find_element(*LogOutLocators.PASSWORD_FIELD)
+        password.send_keys(config.password)
+        log_in = driver.find_element(*LogOutLocators.BUTTON_LOG_IN)
+        log_in.click()
+        personal_account = driver.find_element(*LogOutLocators.PERSONAL_ACCOUNT)
+        personal_account.click()
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.element_to_be_clickable(LogOutLocators.BUTTON_LOG_OUT))
+        log_out = driver.find_element(*LogOutLocators.BUTTON_LOG_OUT)
+        log_out.click()
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.element_to_be_clickable((By.XPATH, ".//h2[text()='Вход']")))
+        assert "Вход" in driver.page_source
+        driver.quit()

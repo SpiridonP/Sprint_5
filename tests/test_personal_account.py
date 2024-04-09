@@ -1,48 +1,58 @@
+import config
+from locators import PersonalAccount
 from selenium.webdriver.common.by import By
-from selenium import webdriver
-import time
-import conftest
-driver = webdriver.Chrome()
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-driver.get("https://stellarburgers.nomoreparties.site/")
+class TestPersonalAccount:
+    def test_click_personal_account(self, driver):
+        log_in = driver.find_element(*PersonalAccount.BUTTON_LOG_IN_ACCOUNT)
+        log_in.click()
+        email = driver.find_element(*PersonalAccount.EMAIL_FIELD)
+        email.send_keys('somes@ya.ru')
+        password = driver.find_element(*PersonalAccount.PASSWORD_FIELD)
+        password.send_keys(config.password)
+        log_in = driver.find_element(*PersonalAccount.BUTTON_LOG_IN)
+        log_in.click()
+        personal_account = driver.find_element(*PersonalAccount.PERSONAL_ACCOUNT)
+        personal_account.click()
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.presence_of_element_located((By.XPATH, ".//p[text()='В этом разделе вы можете изменить свои персональные данные']")))
+        assert 'В этом разделе вы можете изменить свои персональные данные'in driver.page_source
+        driver.quit()
 
-def test_click_personal_account():
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']").click()
-    driver.find_element(By.NAME, "name").send_keys('somes@ya.ru')
-    driver.find_element(By.NAME, "Пароль").send_keys(conftest.password)
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']").click()
-    driver.find_element(By.LINK_TEXT, "Личный Кабинет").click()
-    time.sleep(3)
+    def test_from_personal_account_to_constructor(self, driver):
+        log_in = driver.find_element(*PersonalAccount.BUTTON_LOG_IN_ACCOUNT)
+        log_in.click()
+        email = driver.find_element(*PersonalAccount.EMAIL_FIELD)
+        email.send_keys('somes@ya.ru')
+        password = driver.find_element(*PersonalAccount.PASSWORD_FIELD)
+        password.send_keys(config.password)
+        log_in = driver.find_element(*PersonalAccount.BUTTON_LOG_IN)
+        log_in.click()
+        personal_account = driver.find_element(*PersonalAccount.PERSONAL_ACCOUNT)
+        personal_account.click()
+        constructor = driver.find_element(*PersonalAccount.BUTTON_CONSTRUCTOR)
+        constructor.click()
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.presence_of_element_located(
+            (By.XPATH, ".//h2[text()='Булки']")))
+        assert 'Соберите бургер' in driver.page_source
 
-    driver.quit()
-
-def test_from_personal_account_to_constructor():
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']").click()
-    driver.find_element(By.NAME, "name").send_keys('somes@ya.ru')
-    driver.find_element(By.NAME, "Пароль").send_keys(conftest.password)
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']").click()
-    driver.find_element(By.LINK_TEXT, "Личный Кабинет").click()
-    driver.find_element(By.LINK_TEXT, "Конструктор").click()
-
-    time.sleep(3)
-
-    driver.quit()
-
-def test_from_personal_account_to_title_page_through_click_logo():
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']").click()
-    driver.find_element(By.NAME, "name").send_keys('somes@ya.ru')
-    driver.find_element(By.NAME, "Пароль").send_keys(conftest.password)
-    driver.find_element(By.XPATH,
-                        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']").click()
-    driver.find_element(By.LINK_TEXT, "Личный Кабинет").click()
-    driver.find_element(By.CLASS_NAME, "AppHeader_header__logo__2D0X2").click()
-
-
-    time.sleep(3)
-
-    driver.quit()
+    def test_from_personal_account_to_title_page_through_click_logo(self, driver):
+        log_in = driver.find_element(*PersonalAccount.BUTTON_LOG_IN_ACCOUNT)
+        log_in.click()
+        email = driver.find_element(*PersonalAccount.EMAIL_FIELD)
+        email.send_keys('somes@ya.ru')
+        password = driver.find_element(*PersonalAccount.PASSWORD_FIELD)
+        password.send_keys(config.password)
+        log_in = driver.find_element(*PersonalAccount.BUTTON_LOG_IN)
+        log_in.click()
+        personal_account = driver.find_element(*PersonalAccount.PERSONAL_ACCOUNT)
+        personal_account.click()
+        logo = driver.find_element(*PersonalAccount.LOGO)
+        logo.click()
+        wait = WebDriverWait(driver, 5)
+        wait.until(EC.presence_of_element_located(
+            (By.XPATH, ".//h2[text()='Булки']")))
+        assert 'Соберите бургер' in driver.page_source
