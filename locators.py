@@ -57,7 +57,11 @@ class Constructor:
     TOPPING = (By.XPATH, ".//span[text()='Начинки']")
     BUTTON_CONSTRUCTOR = (By.LINK_TEXT, "Конструктор")
 
-
-
-
+class WaitLocators:
+    WAIT_TEXT_VHOD = (By.XPATH, ".//h2[text()='Вход']")
+    WAIT_TEXT_BULKI = (By.XPATH, ".//h2[text()='Булки']")
+    WAIT_TEXT_SAUSES = (By.XPATH, ".//h2[text()='Соусы']")
+    WAIT_TEXT_TOPPING = (By.XPATH, ".//h2[text()='Начинки']")
+    WAIT_TEXT_CHANGE_PERSONAL_DATA = (By.XPATH, ".//p[text()='В этом разделе вы можете изменить свои персональные данные']")
+    WAIT_BUTTON_LOG_IN = (By.XPATH, ".//button[text()='Войти']")
 

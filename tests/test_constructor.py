@@ -1,6 +1,6 @@
-import config
+import data
 from locators import Constructor
-from selenium.webdriver.common.by import By
+from locators import  WaitLocators
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -10,9 +10,9 @@ class TestConstructor:
         log_in_account = driver.find_element(*Constructor.BUTTON_LOG_IN_ACCOUNT)
         log_in_account.click()
         email = driver.find_element(*Constructor.EMAIL_FIELD)
-        email.send_keys('somes@ya.ru')
+        email.send_keys(data.email)
         password = driver.find_element(*Constructor.PASSWORD_FIELD)
-        password.send_keys(config.password)
+        password.send_keys(data.password)
         log_in_button = driver.find_element(*Constructor.BUTTON_LOG_IN)
         log_in_button.click()
         constructor = driver.find_element(*Constructor.BUTTON_CONSTRUCTOR)
@@ -21,8 +21,9 @@ class TestConstructor:
         sauses.click()
         wait = WebDriverWait(driver, 5)
         wait.until(EC.presence_of_element_located(
-            (By.XPATH, ".//h2[text()='Соусы']")))
-        assert driver.find_element(By.XPATH, ".//h2[text()='Соусы']").text == 'Соусы'
+            (WaitLocators.WAIT_TEXT_SAUSES)))
+        assert driver.find_element(*WaitLocators.WAIT_TEXT_SAUSES).text == 'Соусы'
+
 
 
 
@@ -31,9 +32,9 @@ class TestConstructor:
         log_in_account = driver.find_element(*Constructor.BUTTON_LOG_IN_ACCOUNT)
         log_in_account.click()
         email = driver.find_element(*Constructor.EMAIL_FIELD)
-        email.send_keys('somes@ya.ru')
+        email.send_keys(data.email)
         password = driver.find_element(*Constructor.PASSWORD_FIELD)
-        password.send_keys(config.password)
+        password.send_keys(data.password)
         log_in_button = driver.find_element(*Constructor.BUTTON_LOG_IN)
         log_in_button.click()
         constructor = driver.find_element(*Constructor.BUTTON_CONSTRUCTOR)
@@ -44,31 +45,30 @@ class TestConstructor:
         bulki.click()
         wait = WebDriverWait(driver, 5)
         wait.until(EC.presence_of_element_located(
-            (By.XPATH, ".//h2[text()='Булки']")))
-        assert driver.find_element(By.XPATH, ".//h2[text()='Булки']").text == 'Булки'
+            (WaitLocators.WAIT_TEXT_BULKI)))
+        assert driver.find_element(*WaitLocators.WAIT_TEXT_BULKI).text == 'Булки'
 
 
     def test_check_topping(self, driver):
         log_in_account = driver.find_element(*Constructor.BUTTON_LOG_IN_ACCOUNT)
         log_in_account.click()
         email = driver.find_element(*Constructor.EMAIL_FIELD)
-        email.send_keys('somes@ya.ru')
+        email.send_keys(data.email)
         password = driver.find_element(*Constructor.PASSWORD_FIELD)
-        password.send_keys(config.password)
+        password.send_keys(data.password)
         log_in_button = driver.find_element(*Constructor.BUTTON_LOG_IN)
         log_in_button.click()
         constructor = driver.find_element(*Constructor.BUTTON_CONSTRUCTOR)
         wait = WebDriverWait(driver, 5)
         wait.until(EC.element_to_be_clickable(
-            (By.XPATH, ".//h2[text()='Начинки']")))
+            (WaitLocators.WAIT_TEXT_TOPPING)))
         constructor.click()
-
         topping = driver.find_element(*Constructor.TOPPING)
         topping.click()
         wait = WebDriverWait(driver, 5)
         wait.until(EC.presence_of_element_located(
-            (By.XPATH, ".//h2[text()='Начинки']")))
-        assert driver.find_element(By.XPATH, ".//h2[text()='Начинки']").text == 'Начинки'
+            (WaitLocators.WAIT_TEXT_TOPPING)))
+        assert driver.find_element(*WaitLocators.WAIT_TEXT_TOPPING).text == 'Начинки'
 
 
 
